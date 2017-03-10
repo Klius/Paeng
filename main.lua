@@ -8,32 +8,59 @@ function love.load()
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down")
   ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,20)
+  debug = false
+  --Fonts
+  bigFont = love.graphics.newFont(100)
+  debugFont = love.graphics.newFont(14)
 end
 
 function love.update(dt)
   --Collision
-checkCollision(ball, p1)
-checkCollision(ball, p2)
+  checkCollision(ball, p1)
+  checkCollision(ball, p2)
   ---
   p1:update(dt)
   p2:update(dt)
   ball:update(dt)
+  ----
+  isGoal()
 end
 
 function love.draw()
   p1:draw()
   p2:draw()
   ball:draw()
+  drawScore()
   --Debug
-  love.graphics.print("Player",0,0)
-  love.graphics.print("x:"..p1.x,0,15)
-  love.graphics.print("y:"..p1.y,0,30)
-  love.graphics.print("Ball",300,0)
-  love.graphics.print("x:"..ball.x,300,15)
-  love.graphics.print("y:"..ball.y,300,30)
-  love.graphics.print('Speed:' .. ball.speed,300,45)
+  if debug then
+    love.graphics.setFont(debugFont)
+    --player1
+    love.graphics.print("Player 1",0,0)
+    love.graphics.print("x:"..p1.x,0,15)
+    love.graphics.print("y:"..p1.y,0,30)
+    love.graphics.print("score:"..p1.score,0,45)
+    --player2
+    love.graphics.print("Player 2",150,0)
+    love.graphics.print("x:"..p2.x,150,15)
+    love.graphics.print("y:"..p2.y,150,30)
+    love.graphics.print("score:"..p2.score,150,45)
+    --Ball
+    love.graphics.print("Ball",300,0)
+    love.graphics.print("x:"..ball.x,300,15)
+    love.graphics.print("y:"..ball.y,300,30)
+    love.graphics.print('Speed:' .. ball.speed,300,45)
+    --Other
+    love.graphics.print('Mem Used:'..Math.floorcollectgarbage("count").."KB",450,0)
+  end
 end
-
+function love.keypressed(key)
+   if key == "escape" then
+      love.event.quit()
+   end
+   if key == "d" then
+    debug = true
+   end
+end
 -- Collision detection function;
 -- Returns true if two boxes overlap, false if they don't;
 -- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
@@ -50,4 +77,19 @@ function checkCollision(ball, player)
     ball:setSpeed(ball.speed*-1,ball.speed*-math.sin(bounceAngle))
     ball:moreSpeed()
   end
+end
+
+function isGoal()
+  if(ball.x+ball.radius > love.graphics.getWidth() ) then
+    ball:reset()
+    p1.score = p1.score+1
+  elseif(ball.x<0) then
+    ball:reset()
+    p2.score = p2.score+1
+  end
+end
+function drawScore()
+  
+  love.graphics.setFont(bigFont)
+  love.graphics.print(p1.score, love.graphics.getWidth()/2-100, 0)
 end

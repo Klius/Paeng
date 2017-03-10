@@ -14,11 +14,6 @@ function Bola:update(dt)
   self.dt = dt
   self.x = self.x + self.speedX * dt
   self.y = self.y + self.speedY * dt
-  if(self.x+self.radius > love.graphics.getWidth() ) then
-    self:reset()
-  elseif(self.x<0) then
-    self:reset()
-  end
   if (self.y < 0) then
     self.y = 0
     self.speedY = self.speedY *-1

@@ -7,6 +7,7 @@ function Pala:new(x, y, width, height,upkey,downkey)
     self.height = height
     self.upkey = upkey
     self.downkey = downkey
+    self.score = 0
 end
 --This is where it moves and is checked!
 function Pala:update(dt,world)
