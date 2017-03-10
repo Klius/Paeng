@@ -9,7 +9,7 @@ function Pala:new(x, y, width, height,upkey,downkey)
     self.downkey = downkey
 end
 --This is where it moves and is checked!
-function Pala:update( dt)
+function Pala:update(dt,world)
   if love.keyboard.isDown(self.upkey) then
     self.y = self.y - self.speed * dt
   elseif love.keyboard.isDown(self.downkey) then
