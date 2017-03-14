@@ -8,10 +8,13 @@ function love.load()
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down")
   ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,20)
+  --DEBUG
   debug = false
   --Fonts
   bigFont = love.graphics.newFont(100)
   debugFont = love.graphics.newFont(14)
+  --math
+  floor = math.floor
 end
 
 function love.update(dt)
@@ -31,6 +34,7 @@ function love.draw()
   p2:draw()
   ball:draw()
   drawScore()
+  
   --Debug
   if debug then
     love.graphics.setFont(debugFont)
@@ -50,7 +54,8 @@ function love.draw()
     love.graphics.print("y:"..ball.y,300,30)
     love.graphics.print('Speed:' .. ball.speed,300,45)
     --Other
-    love.graphics.print('Mem Used:'..Math.floorcollectgarbage("count").."KB",450,0)
+    love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",450,0)
+    love.graphics.print('FPS:'..love.timer.getFPS( ),450,15)
   end
 end
 function love.keypressed(key)
@@ -58,7 +63,11 @@ function love.keypressed(key)
       love.event.quit()
    end
    if key == "d" then
-    debug = true
+    if debug then
+      debug = false
+    else
+      debug = true
+    end
    end
 end
 -- Collision detection function;
@@ -89,7 +98,7 @@ function isGoal()
   end
 end
 function drawScore()
-  
   love.graphics.setFont(bigFont)
-  love.graphics.print(p1.score, love.graphics.getWidth()/2-100, 0)
+  love.graphics.print(p1.score, love.graphics.getWidth()/2-150, 0)
+  love.graphics.print(p2.score, love.graphics.getWidth()/2+100, 0)
 end
