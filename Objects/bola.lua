@@ -3,11 +3,16 @@ Bola = Drawable:extend()
 
 function Bola:new(x, y, radius)
     Bola.super.new(self, x, y)
+    --Config
+    self.defaultSpeed = 350
+    self.maxSpeed = 800
+    self.incrementSpeed = 15
     --A circle doesn't have a width or height. It has a radius.
     self.radius = radius
     self.speedX = 350
-    self.speed = 350
+    self.speed = self.defaultSpeed
     self.speedY = 0
+    self.colors = {{255,0,0,255}, {255,255,0,255},{98,150,255,255},{0,255,0,255}}
 end
 
 function Bola:update(dt)
@@ -24,32 +29,37 @@ function Bola:update(dt)
 end
 
 function Bola:draw()
+    love.graphics.setColor(self.colors[4][1],self.colors[4][2],
+                            self.colors[4][3],self.colors[4][4])
     love.graphics.circle("line", self.x, self.y,self.radius)
+    love.graphics.setColor(255,255,255,255)
 end
-
+--[[
+Reseteja la bola a l'estat inicial
+]]
 function Bola:reset()
   self.x = love.graphics.getWidth()/2
   self.y = love.graphics.getHeight()/2
-  self.speed = 350
-  self.speedX = 350
+  self.speed = self.defaultSpeed
+  self.speedX = self.defaultSpeed
   self.speedY = 0
-  --self.diagonalSpeed = 0
-  --self:changeDirection()
 end
 function Bola:setSpeed(x,y)
   self.speedX = x
   self.speed = self.speed * -1
   self.speedY = y
 end
+
+--[[
+  Adds more speed to the current speed. 
+]]
 function Bola:moreSpeed()
-  if self.speed < 0 then
-    self.speed = self.speed -10
-  else
-    self.speed = self.speed +10
-  end
-  if self.speed > 700 then
-    self.speed = 700
-  elseif self.speed < -700 then
-    self.speed = -700
+  if self.speed ~= self.maxSpeed and 
+    self.speed ~= -self.maxSpeed then
+    if self.speed < 0 then
+      self.speed = self.speed - self.incrementSpeed
+    else
+      self.speed = self.speed + self.incrementSpeed
+    end
   end
 end
