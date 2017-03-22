@@ -10,6 +10,7 @@ function love.load()
   ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,20)
   --DEBUG
   debug = false
+  pause = false
   --Fonts
   bigFont = love.graphics.newFont(100)
   debugFont = love.graphics.newFont(14)
@@ -18,22 +19,24 @@ function love.load()
 end
 
 function love.update(dt)
-  --Collision
-  checkCollision(ball, p1)
-  checkCollision(ball, p2)
-  ---
-  p1:update(dt)
-  p2:update(dt)
-  ball:update(dt)
-  ----
-  isGoal()
+  if pause == false then
+    --Collision
+    ball:checkCollision(p1)
+    ball:checkCollision(p2)
+    ---
+    p1:update(dt)
+    p2:update(dt)
+    ball:update(dt)
+    ----
+    isGoal()
+  end
 end
 
 function love.draw()
+  drawScore()
   p1:draw()
   p2:draw()
   ball:draw()
-  drawScore()
   
   --Debug
   if debug then
@@ -53,6 +56,7 @@ function love.draw()
     love.graphics.print("x:"..ball.x,300,15)
     love.graphics.print("y:"..ball.y,300,30)
     love.graphics.print('Speed:' .. ball.speed,300,45)
+    love.graphics.print('Color:' .. ball.colorLevel,300,60)
     --Other
     love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",450,0)
     love.graphics.print('FPS:'..love.timer.getFPS( ),450,15)
@@ -69,24 +73,15 @@ function love.keypressed(key)
       debug = true
     end
    end
+   if key == "p" then
+      if pause then
+        pause = false
+      else
+        pause = true
+      end
+   end
 end
--- Collision detection function;
--- Returns true if two boxes overlap, false if they don't;
--- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
--- x2,y2,w2 & h2 are the same, but for the second box.
-function checkCollision(ball, player)
-  if (ball.x < player.x+player.width and
-         player.x < ball.x+ball.radius and
-         ball.y < player.y+player.height and
-         player.y < ball.y+ball.radius) then
-    
-    local relativeIntersectY = (player.y+(player.height/2)) - (ball.y+(ball.radius/2))
-    local normalizedRelativeIntersectionY = (relativeIntersectY/(player.height/2))
-    local bounceAngle = normalizedRelativeIntersectionY * 60
-    ball:setSpeed(ball.speed*-1,ball.speed*-math.sin(bounceAngle))
-    ball:moreSpeed()
-  end
-end
+
 
 function isGoal()
   if(ball.x+ball.radius > love.graphics.getWidth() ) then

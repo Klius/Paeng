@@ -13,15 +13,15 @@ function Bola:new(x, y, radius)
     self.speed = self.defaultSpeed
     self.speedY = 0
     self.colors = {
-                    {255,255,255,255},{255,0,0,255}, {255,255,0,255},
-                    {98,150,255,255},{0,255,0,255}
+                    {255,255,255,255},{255,255,0,255},{98,150,255,255} ,
+                    {0,255,0,255}, {255,0,0,255}
                   }
     self.colorLevel = 1
+    self.angle = 0
 end
 
 function Bola:update(dt)
   self:updateColorLevel()
-  self.dt = dt
   self.x = self.x + self.speedX * dt
   self.y = self.y + self.speedY * dt
   if (self.y < 0) then
@@ -31,18 +31,24 @@ function Bola:update(dt)
     self.y = love.graphics.getHeight() - self.radius
     self.speedY = self.speedY *-1
   end
+  self.angle = self.angle + dt * math.pi/2
+	self.angle = self.angle % (2*math.pi)
 end
 
 function Bola:updateColorLevel() 
   
-  if self.speed > 400 and self.speed < 500 then
+  if self.speed > 400 and self.speed < 500 or self.speed > -400 and self.speed < -500 then
     self.colorLevel = 2
-  elseif self.speed > 500 and self.speed < 600 then
-  elseif self.speed > 600 and self.speed < 700 then
-  else
-    
+  elseif self.speed > 500 and self.speed < 600 or self.speed > -500 and self.speed < -600 then
+    self.colorLevel = 3
+  elseif self.speed > 600 and self.speed < 700 or self.speed > -600 and self.speed < -700 then
+    self.colorLevel = 4
+  elseif self.speed == 800 or self.speed == -800 then
+    self.colorLevel = math.random(1,5)
   end 
 end
+
+
 function Bola:draw()
     love.graphics.setColor(
                             self.colors[self.colorLevel][1],
@@ -50,8 +56,12 @@ function Bola:draw()
                             self.colors[self.colorLevel][3],
                             self.colors[self.colorLevel][4]
                           )
-    love.graphics.circle("line", self.x, self.y,self.radius)
+    love.graphics.translate(self.x + self.radius/2, self.y+self.radius/2)
+    love.graphics.rotate(self.angle)
+    love.graphics.translate(-(self.x + self.radius/2), -(self.y+self.radius/2))
+    love.graphics.circle("line", self.x, self.y,self.radius,8)
     love.graphics.setColor(255,255,255,255)
+    love.graphics.origin()
 end
 --[[
 Reseteja la bola a l'estat inicial
@@ -81,5 +91,22 @@ function Bola:moreSpeed()
     else
       self.speed = self.speed + self.incrementSpeed
     end
+  end
+end
+-- Collision detection function;
+-- Returns true if two boxes overlap, false if they don't;
+-- x1,y1 are the top-left coords of the first box, while w1,h1 are its width and height;
+-- x2,y2,w2 & h2 are the same, but for the second box.
+function Bola:checkCollision(player)
+  if (self.x < player.x+player.width and
+         player.x < self.x+self.radius and
+         self.y < player.y+player.height and
+         player.y < self.y+self.radius) then
+    
+    local relativeIntersectY = (player.y+(player.height/2)) - (ball.y+(ball.radius/2))
+    local normalizedRelativeIntersectionY = (relativeIntersectY/(player.height/2))
+    local bounceAngle = normalizedRelativeIntersectionY * 60
+    self:setSpeed(self.speed*-1,self.speed*-math.sin(bounceAngle))
+    self:moreSpeed()
   end
 end
