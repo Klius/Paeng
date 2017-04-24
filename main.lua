@@ -16,6 +16,23 @@ function love.load()
   debugFont = love.graphics.newFont(14)
   --math
   floor = math.floor
+  math.randomseed(os.time())
+  music = love.audio.newSource("assets/sfx/loop.wav")
+  music:setLooping(true)
+  music:setVolume(0.5)
+  music:play()
+end
+
+function randompassword()
+  local password = ""
+  -- 33-125
+  math.randomseed( os.time() )
+  for i=0,16,1 do
+    local number = math.floor(math.random() * (125 - 33)) + 33
+    password = password .. string.char(number)
+  end
+  
+  return password
 end
 
 function love.update(dt)

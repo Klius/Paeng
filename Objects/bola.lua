@@ -18,18 +18,31 @@ function Bola:new(x, y, radius)
                   }
     self.colorLevel = 1
     self.angle = 0
+    self:initSound()
+end
+
+function Bola:initSound()
+  self.collisionSFX = {}
+  for i=1,7,1 do
+    src = love.audio.newSource("assets/sfx/ball-"..i..".ogg",static)
+    table.insert(self.collisionSFX,src)
+  end
 end
 
 function Bola:update(dt)
   self:updateColorLevel()
   self.x = self.x + self.speedX * dt
   self.y = self.y + self.speedY * dt
+  --Check if the Ball collides with top and bottom walls
   if (self.y < 0) then
     self.y = 0
     self.speedY = self.speedY *-1
+    self.collisionSFX[math.random(1,7)]:play()
   elseif (self.y+self.radius > love.graphics.getHeight()) then
+    
     self.y = love.graphics.getHeight() - self.radius
     self.speedY = self.speedY *-1
+    self.collisionSFX[math.random(1,7)]:play()
   end
   self.angle = self.angle + dt * math.pi/2
 	self.angle = self.angle % (2*math.pi)
@@ -108,5 +121,6 @@ function Bola:checkCollision(player)
     local bounceAngle = normalizedRelativeIntersectionY * 60
     self:setSpeed(self.speed*-1,self.speed*-math.sin(bounceAngle))
     self:moreSpeed()
+    self.collisionSFX[math.random(1,7)]:play()
   end
 end
