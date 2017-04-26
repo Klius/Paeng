@@ -6,3 +6,8 @@ function Drawable:new(x, y)
     self.y = y
     self.speed = 400
 end
+
+
+function Drawable.draw(self)
+  love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+end
