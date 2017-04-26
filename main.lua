@@ -20,7 +20,7 @@ function love.load()
   music = love.audio.newSource("assets/sfx/loop.wav")
   music:setLooping(true)
   music:setVolume(0.5)
-  music:play()
+  --music:play()
 end
 
 function randompassword()
