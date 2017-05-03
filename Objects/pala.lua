@@ -28,3 +28,15 @@ end
 function Pala.draw(self)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 end
+
+function Pala:applyPowerup(powerup)
+  if powerup.flags["type"] == "speed" then
+    self.speed = powerup.flags["newSpeed"]
+  end
+end
+
+function Pala:deapplyPowerup(powerup)
+  if powerup.flags["type"] == "speed" then
+    self.speed = powerup.flags["defaultSpeed"]
+  end
+end

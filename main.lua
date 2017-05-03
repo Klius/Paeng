@@ -1,9 +1,13 @@
 function love.load()
-  Object = require "libs/classic"
+  --Configuration flags for the powerups
+  require "libs/powerup-conf"
   --baseclass to all objects
+  Object = require "libs/classic"
+  --Objects
   require "Objects/drawable"
   require "Objects/pala"
   require "Objects/bola"
+  require "Objects/powerup"
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down")
@@ -20,7 +24,9 @@ function love.load()
   music = love.audio.newSource("assets/sfx/loop.wav")
   music:setLooping(true)
   music:setVolume(0.5)
-  --music:play()
+  music:play()
+  ---Powerup test
+  powerup = Powerup( 300, 300, 50, 50, "assets/powerup-dummy.png", speedPowerup)
 end
 
 function randompassword()
@@ -40,10 +46,28 @@ function love.update(dt)
     --Collision
     ball:checkCollision(p1)
     ball:checkCollision(p2)
-    ---
+    ball:checkCollisionPowerup(powerup)
+    --Powerup modifier
+    if(powerup.flags["active"]) then
+      if(powerup.flags["player"] == 1)then
+        p1:applyPowerup(powerup)
+      else
+        p2:applyPowerup(powerup)
+      end
+    elseif(powerup.flags["dead"] == true)then
+      if(powerup.flags["player"] == 1)then
+        p1:deapplyPowerup(powerup)
+      else
+        p2:deapplyPowerup(powerup)
+      end
+    end
+    ---Updates
+    
     p1:update(dt)
     p2:update(dt)
     ball:update(dt)
+    
+    powerup:update(dt)
     ----
     isGoal()
   end
@@ -55,6 +79,7 @@ function love.draw()
   p2:draw()
   ball:draw()
   
+  powerup:draw()
   --Debug
   if debug then
     love.graphics.setFont(debugFont)
@@ -63,11 +88,13 @@ function love.draw()
     love.graphics.print("x:"..p1.x,0,15)
     love.graphics.print("y:"..p1.y,0,30)
     love.graphics.print("score:"..p1.score,0,45)
+    love.graphics.print("speed:"..p1.speed,0,60)
     --player2
     love.graphics.print("Player 2",150,0)
     love.graphics.print("x:"..p2.x,150,15)
     love.graphics.print("y:"..p2.y,150,30)
     love.graphics.print("score:"..p2.score,150,45)
+    love.graphics.print("speed:"..p2.speed,150,60)
     --Ball
     love.graphics.print("Ball",300,0)
     love.graphics.print("x:"..ball.x,300,15)

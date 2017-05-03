@@ -19,11 +19,12 @@ function Bola:new(x, y, radius)
     self.colorLevel = 1
     self.angle = 0
     self:initSound()
+    self.currentSound = 1 
 end
 
 function Bola:initSound()
   self.collisionSFX = {}
-  for i=1,7,1 do
+  for i=1,8,1 do
     src = love.audio.newSource("assets/sfx/ball-"..i..".ogg",static)
     table.insert(self.collisionSFX,src)
   end
@@ -37,12 +38,12 @@ function Bola:update(dt)
   if (self.y < 0) then
     self.y = 0
     self.speedY = self.speedY *-1
-    self.collisionSFX[math.random(1,7)]:play()
+    self.collisionSFX[self:nextSound()]:play()
   elseif (self.y+self.radius > love.graphics.getHeight()) then
     
     self.y = love.graphics.getHeight() - self.radius
     self.speedY = self.speedY *-1
-    self.collisionSFX[math.random(1,7)]:play()
+    self.collisionSFX[self:nextSound()]:play()
   end
   self.angle = self.angle + dt * math.pi/2
 	self.angle = self.angle % (2*math.pi)
@@ -121,6 +122,42 @@ function Bola:checkCollision(player)
     local bounceAngle = normalizedRelativeIntersectionY * 60
     self:setSpeed(self.speed*-1,self.speed*-math.sin(bounceAngle))
     self:moreSpeed()
-    self.collisionSFX[math.random(1,7)]:play()
+    self.collisionSFX[self:nextSound()]:play()
+    --self.collisionSFX[math.random(1,7)]:play()
   end
+end
+
+function Bola:checkCollisionPowerup(powerup) 
+  if (self.x < powerup.x+powerup.width and
+         powerup.x < self.x+self.radius and
+         self.y < powerup.y+powerup.height and
+         powerup.y < self.y+self.radius and 
+         powerup.flags["active"] == false) then
+    
+    powerup.flags["active"] = true
+    powerup.flags["spawned"] = false
+    if powerup.flags["applies"] == "same" then
+      if self.speedX > 0 then
+        powerup.flags["player"] = 1
+      else 
+        powerup.flags["player"] = 2
+      end
+    else
+      if self.speedX > 0 then
+        powerup.flags["player"] = 2
+      else 
+        powerup.flags["player"] = 1
+      end
+    end
+    --restart the startime for when it's active
+    powerup.flags["startTime"] = love.timer.getTime()
+  end
+end
+
+function Bola:nextSound()
+  self.currentSound = self.currentSound + 1
+  if self.currentSound > 8 then
+    self.currentSound = 1
+  end
+  return self.currentSound
 end
