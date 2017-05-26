@@ -7,6 +7,8 @@ function love.load()
   require "Objects/bola"
   require "Objects/powerup"
   require "Objects/powerup-speed"
+  require "Objects/powerup-minimize-ball"
+  require "Objects/powerup-maximize-ball"
   require "Objects/powerup-pool"
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
@@ -20,7 +22,6 @@ function love.load()
   debugFont = love.graphics.newFont(14)
   --math
   floor = math.floor
-  math.randomseed(os.time())
   music = love.audio.newSource("assets/sfx/loop.wav")
   music:setLooping(true)
   music:setVolume(0.5)
@@ -58,12 +59,16 @@ function love.update(dt)
           
           if(powerup.player == 1)then
             p1:applyPowerup(powerup)
+          elseif powerup.player == 3 then
+            ball:applyPowerup(powerup)
           else
             p2:applyPowerup(powerup)
           end
         elseif(powerup.deactivate)then
           if(powerup.player == 1)then
             p1:deapplyPowerup(powerup)
+          elseif powerup.player == 3 then
+            ball:deapplyPowerup(powerup)
           else
             p2:deapplyPowerup(powerup)
           end
@@ -110,6 +115,7 @@ function love.draw()
     love.graphics.print("y:"..ball.y,300,30)
     love.graphics.print('Speed:' .. ball.speed,300,45)
     love.graphics.print('Color:' .. ball.colorLevel,300,60)
+    love.graphics.print('Size:' .. ball.radius,300,75)
     --Other
     love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",550,0)
     love.graphics.print('FPS:'..love.timer.getFPS( ),550,15)

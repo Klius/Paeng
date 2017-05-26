@@ -142,6 +142,8 @@ function Bola:checkCollisionPowerup(powerup)
       else 
         powerup.player = 2
       end
+    elseif powerup.applies == "ball" then
+        powerup.player = 3
     else
       if self.speedX > 0 then
         powerup.player = 2
@@ -159,4 +161,16 @@ function Bola:nextSound()
     self.currentSound = 1
   end
   return self.currentSound
+end
+
+function Bola:applyPowerup(powerup)
+  if powerup.type == "mini" or powerup.type == "maxi" then
+    self.radius = powerup.newSize
+  end
+end
+
+function Bola:deapplyPowerup(powerup)
+  if powerup.type == "mini" or powerup.type == "maxi" then
+    self.radius = powerup.defaultSize
+  end
 end

@@ -10,7 +10,7 @@ function PowerupPool:new()
                       ["maxY"] = 100,
                       ["minY"] = love.graphics.getHeight() - 50
                     }
-  self.random = math.random
+  self.rng = love.math.newRandomGenerator( )
 end
 
 function PowerupPool:update(dt)
@@ -30,8 +30,17 @@ function PowerupPool:update(dt)
 end
 
 function PowerupPool:spawnPowerup() 
-  powerup = PowerupSpeed( self.random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
+  local chance = self.rng:random(0,100)
+  if  chance > 60 then
+    powerup = PowerupSpeed( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50, "assets/powerup-dummy.png")
+  elseif chance > 20 and chance < 60 then
+    powerup = PowerupMinimizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
+                                  50, 50, "assets/powerup-dummy.png")
+  elseif chance > 0 and chance < 20 then
+    powerup = PowerupMaximizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
+                                  50, 50, "assets/powerup-dummy.png")
+  end
   table.insert(self.powerups,powerup)
 end
 
