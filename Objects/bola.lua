@@ -132,25 +132,24 @@ function Bola:checkCollisionPowerup(powerup)
          powerup.x < self.x+self.radius and
          self.y < powerup.y+powerup.height and
          powerup.y < self.y+self.radius and 
-         powerup.flags["active"] == false) then
+         powerup.active == false) then
     
-    powerup.flags["active"] = true
-    powerup.flags["spawned"] = false
-    if powerup.flags["applies"] == "same" then
+    powerup.active = true
+    powerup.spawned = false
+    if powerup.applies == "same" then
       if self.speedX > 0 then
-        powerup.flags["player"] = 1
+        powerup.player = 1
       else 
-        powerup.flags["player"] = 2
+        powerup.player = 2
       end
     else
       if self.speedX > 0 then
-        powerup.flags["player"] = 2
+        powerup.player = 2
       else 
-        powerup.flags["player"] = 1
+        powerup.player = 1
       end
     end
-    --restart the startime for when it's active
-    powerup.flags["startTime"] = love.timer.getTime()
+
   end
 end
 

@@ -1,0 +1,10 @@
+PowerupSpeed = Powerup:extend()
+
+function PowerupSpeed:new(x, y, width, height, sprite)
+    PowerupSpeed.super.new(self, x, y, width, height, sprite, 5, 5)
+    self.applies = "same"
+    self.player = 0 
+    self.type = "speed"
+    self.newSpeed = 600
+    self.defaultSpeed = 400
+end

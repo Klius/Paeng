@@ -1,6 +1,4 @@
 function love.load()
-  --Configuration flags for the powerups
-  require "libs/powerup-conf"
   --baseclass to all objects
   Object = require "libs/classic"
   --Objects
@@ -8,6 +6,8 @@ function love.load()
   require "Objects/pala"
   require "Objects/bola"
   require "Objects/powerup"
+  require "Objects/powerup-speed"
+  require "Objects/powerup-pool"
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down")
@@ -26,7 +26,9 @@ function love.load()
   music:setVolume(0.5)
   music:play()
   ---Powerup test
-  powerup = Powerup( 300, 300, 50, 50, "assets/powerup-dummy.png", speedPowerup)
+  powerupPool = PowerupPool()
+  --timing debug 
+  startTime = love.timer.getTime()
 end
 
 function randompassword()
@@ -46,28 +48,35 @@ function love.update(dt)
     --Collision
     ball:checkCollision(p1)
     ball:checkCollision(p2)
-    ball:checkCollisionPowerup(powerup)
-    --Powerup modifier
-    if(powerup.flags["active"]) then
-      if(powerup.flags["player"] == 1)then
-        p1:applyPowerup(powerup)
-      else
-        p2:applyPowerup(powerup)
+    for key,powerup in pairs(powerupPool.powerups) do
+      if powerup.spawned then
+        
+        ball:checkCollisionPowerup(powerup)
+        --When the powerup is active we apply it
       end
-    elseif(powerup.flags["dead"] == true)then
-      if(powerup.flags["player"] == 1)then
-        p1:deapplyPowerup(powerup)
-      else
-        p2:deapplyPowerup(powerup)
-      end
+      if(powerup.active) then
+          
+          if(powerup.player == 1)then
+            p1:applyPowerup(powerup)
+          else
+            p2:applyPowerup(powerup)
+          end
+        elseif(powerup.deactivate)then
+          if(powerup.player == 1)then
+            p1:deapplyPowerup(powerup)
+          else
+            p2:deapplyPowerup(powerup)
+          end
+          powerup.dead = true  
+        end
     end
-    ---Updates
+  ---Updates
     
     p1:update(dt)
     p2:update(dt)
     ball:update(dt)
     
-    powerup:update(dt)
+    powerupPool:update(dt)
     ----
     isGoal()
   end
@@ -79,7 +88,7 @@ function love.draw()
   p2:draw()
   ball:draw()
   
-  powerup:draw()
+  powerupPool:draw()
   --Debug
   if debug then
     love.graphics.setFont(debugFont)
@@ -102,8 +111,14 @@ function love.draw()
     love.graphics.print('Speed:' .. ball.speed,300,45)
     love.graphics.print('Color:' .. ball.colorLevel,300,60)
     --Other
-    love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",450,0)
-    love.graphics.print('FPS:'..love.timer.getFPS( ),450,15)
+    love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",550,0)
+    love.graphics.print('FPS:'..love.timer.getFPS( ),550,15)
+    love.graphics.print('TIME:'..love.timer.getTime()- startTime ,550,30)
+    for key,powerup in pairs(powerupPool.powerups) do
+      if powerup.spawned then
+        love.graphics.print("Duration of Spawn"..powerup.durationOfSpawn,powerup.x+15,powerup.y-15)
+      end
+    end
   end
 end
 function love.keypressed(key)

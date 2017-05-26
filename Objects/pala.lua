@@ -30,13 +30,13 @@ function Pala.draw(self)
 end
 
 function Pala:applyPowerup(powerup)
-  if powerup.flags["type"] == "speed" then
-    self.speed = powerup.flags["newSpeed"]
+  if powerup.type == "speed" then
+    self.speed = powerup.newSpeed
   end
 end
 
 function Pala:deapplyPowerup(powerup)
-  if powerup.flags["type"] == "speed" then
-    self.speed = powerup.flags["defaultSpeed"]
+  if powerup.type == "speed" then
+    self.speed = powerup.defaultSpeed
   end
 end
