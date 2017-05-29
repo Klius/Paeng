@@ -32,11 +32,15 @@ end
 function Pala:applyPowerup(powerup)
   if powerup.type == "speed" then
     self.speed = powerup.newSpeed
+  elseif powerup.type == "maxi" then
+    self.height = powerup.newSize
   end
 end
 
 function Pala:deapplyPowerup(powerup)
   if powerup.type == "speed" then
     self.speed = powerup.defaultSpeed
+  elseif powerup.type == "maxi" then
+    self.height = powerup.defaultSize
   end
 end

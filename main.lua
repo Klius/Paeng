@@ -9,6 +9,7 @@ function love.load()
   require "Objects/powerup-speed"
   require "Objects/powerup-minimize-ball"
   require "Objects/powerup-maximize-ball"
+  require "Objects/powerup-maximize-pala"
   require "Objects/powerup-pool"
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
@@ -127,6 +128,7 @@ function love.draw()
     end
   end
 end
+
 function love.keypressed(key)
    if key == "escape" then
       love.event.quit()

@@ -38,7 +38,7 @@ function Powerup:update(dt)
   elseif (self.spawned) then
     self.durationOfSpawn = self.durationOfSpawn - dt
     self.durationOfFrame = self.durationOfFrame - dt
-    if self.durationOfFrame <= 0 then
+    if self.durationOfFrame < 0 then
       self.durationOfFrame = 0.3
       self.currentFrame = self.currentFrame + 1
       if self.currentFrame > self.totalFrames then self.currentFrame = 0 end
