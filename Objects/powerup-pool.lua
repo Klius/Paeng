@@ -31,15 +31,15 @@ end
 
 function PowerupPool:spawnPowerup() 
   local chance = self.rng:random(0,100)
-  if  chance > 60 then
+  if  chance > 100 then
     powerup = PowerupSpeed( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50, "assets/powerup-dummy.png")
-  elseif chance > 20 and chance < 60 then
+  elseif chance > 20 and chance < 60 then --
     powerup = PowerupMinimizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
-                                  50, 50, "assets/powerup-dummy.png")
-  elseif chance > 0 and chance < 20 then
+                                  50, 50, "assets/powerup-mini-ball.png")
+  elseif chance > 0  and chance < 20 then --
     powerup = PowerupMaximizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
-                                  50, 50, "assets/powerup-dummy.png")
+                                  50, 50, "assets/powerup-maxi-ball.png")
   end
   table.insert(self.powerups,powerup)
 end
