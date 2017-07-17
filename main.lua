@@ -10,11 +10,30 @@ function love.load()
   require "Objects/powerup-minimize-ball"
   require "Objects/powerup-maximize-ball"
   require "Objects/powerup-maximize-pala"
+  require "Objects/powerup-minimize-pala"
   require "Objects/powerup-pool"
+  --shader
+  shine = require "libs/shine"
+  sketch = shine.sketch()
+  crt = shine.crt()
+  scanline = shine.scanlines()
+  glow = shine.glowsimple()
+  postEffect = glow:chain(scanline):chain(sketch)--:chain(crt)
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down")
-  ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,20)
+  ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,25)
+  --Background
+  love.graphics.setColor(2,156,24,255)
+  background = love.graphics.newCanvas()
+  love.graphics.setCanvas(background)
+  for i=0,love.graphics.getWidth(),64 do
+      love.graphics.line(i,0,i,love.graphics.getHeight())
+  end
+  for i=0,love.graphics.getHeight(),64 do
+      love.graphics.line(0,i,love.graphics.getWidth(),i)
+  end
+  love.graphics.setCanvas()
   --DEBUG
   debug = false
   pause = false
@@ -56,7 +75,7 @@ function love.update(dt)
         ball:checkCollisionPowerup(powerup)
         --When the powerup is active we apply it
       end
-      if(powerup.active) then
+      if(powerup.activate) then
           
           if(powerup.player == 1)then
             p1:applyPowerup(powerup)
@@ -65,7 +84,9 @@ function love.update(dt)
           else
             p2:applyPowerup(powerup)
           end
-        elseif(powerup.deactivate)then
+          powerup.activate = false
+          powerup.active = true
+      elseif(powerup.deactivate)then
           if(powerup.player == 1)then
             p1:deapplyPowerup(powerup)
           elseif powerup.player == 3 then
@@ -74,7 +95,7 @@ function love.update(dt)
             p2:deapplyPowerup(powerup)
           end
           powerup.dead = true  
-        end
+      end
     end
   ---Updates
     
@@ -89,12 +110,18 @@ function love.update(dt)
 end
 
 function love.draw()
-  drawScore()
-  p1:draw()
-  p2:draw()
-  ball:draw()
   
-  powerupPool:draw()
+postEffect:draw(function()
+            love.graphics.draw(background)
+            p1:draw()
+            p2:draw()
+            ball:draw()
+            powerupPool:draw()
+            drawScore()
+          end) 
+
+
+    
   --Debug
   if debug then
     love.graphics.setFont(debugFont)

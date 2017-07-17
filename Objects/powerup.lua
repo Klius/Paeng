@@ -5,6 +5,7 @@ function Powerup:new(x, y, width, height, sprite, duration, durationOfSpawn)
     self.width = width
     self.height = height
     self.sprite = love.graphics.newImage(sprite)
+    self.activate = false
     self.active = false
     self.deactivate = false
     self.spawned = true

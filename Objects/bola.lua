@@ -70,12 +70,14 @@ function Bola:draw()
                             self.colors[self.colorLevel][3],
                             self.colors[self.colorLevel][4]
                           )
+    love.graphics.setLineWidth(3)
     love.graphics.translate(self.x + self.radius/2, self.y+self.radius/2)
     love.graphics.rotate(self.angle)
     love.graphics.translate(-(self.x + self.radius/2), -(self.y+self.radius/2))
     love.graphics.circle("line", self.x, self.y,self.radius,8)
     love.graphics.setColor(255,255,255,255)
     love.graphics.origin()
+    love.graphics.setLineWidth(1)
 end
 --[[
 Reseteja la bola a l'estat inicial
@@ -121,6 +123,9 @@ function Bola:checkCollision(player)
     local normalizedRelativeIntersectionY = (relativeIntersectY/(player.height/2))
     local bounceAngle = normalizedRelativeIntersectionY * 60
     self:setSpeed(self.speed*-1,self.speed*-math.sin(bounceAngle))
+    --This is the bounce back
+    self.x = self.x + (self.speed*love.timer.getDelta())
+
     self:moreSpeed()
     self.collisionSFX[self:nextSound()]:play()
     --self.collisionSFX[math.random(1,7)]:play()
@@ -134,7 +139,7 @@ function Bola:checkCollisionPowerup(powerup)
          powerup.y < self.y+self.radius and 
          powerup.active == false) then
     
-    powerup.active = true
+    powerup.activate = true
     powerup.spawned = false
     if powerup.applies == "same" then
       if self.speedX > 0 then
