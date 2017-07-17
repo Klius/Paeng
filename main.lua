@@ -18,6 +18,7 @@ function love.load()
   crt = shine.crt()
   scanline = shine.scanlines()
   glow = shine.glowsimple()
+  god = shine.godsray()
   postEffect = glow:chain(scanline):chain(sketch)--:chain(crt)
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
@@ -112,12 +113,17 @@ end
 function love.draw()
   
 postEffect:draw(function()
+            love.graphics.setColor(255,255,255,255)
             love.graphics.draw(background)
+            powerupPool:draw()
+            ball:draw()
+            drawScore()
+            love.graphics.setColor(2,156,24,255)
             p1:draw()
             p2:draw()
-            ball:draw()
-            powerupPool:draw()
-            drawScore()
+            
+            
+
           end) 
 
 

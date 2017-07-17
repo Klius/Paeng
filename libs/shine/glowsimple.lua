@@ -51,7 +51,7 @@ description = "Simple glow shader based on gassian blurring",
 
 new = function(self)
 	self.canvas  = {love.graphics.newCanvas(), love.graphics.newCanvas()}
-	self.shader_blur = build_blur_shader(5)
+	self.shader_blur = build_blur_shader(4)
 	self.shader_thresh = love.graphics.newShader[[
 	extern number min_luma;
 	vec4 effect(vec4 color, Image texture, vec2 tc, vec2 _)
@@ -61,7 +61,7 @@ new = function(self)
 		return c * color * step(min_luma, luma);
 	}
 	]]
-	self.shader_thresh:send('min_luma', 0.2)
+	self.shader_thresh:send('min_luma', 1)
 end,
 
 draw = function(self, func, ...)
