@@ -38,10 +38,15 @@ function PowerupPool:spawnPowerup()
   --                                50, 50)
 --    powerup = PowerupSpeed( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
 --                                  50, 50, "assets/powerup-dummy.png")
-  elseif chance > 20 and chance < 60 then --
+  elseif chance > 70 and chance < 85 then
+    powerup = PowerupMaximizePala( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
+                                  50, 50)
+  elseif chance > 50 and chance < 70 then
+    powerup = PowerupMinimizePala( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),                                  50, 50)
+  elseif chance > 15 and chance < 50 then 
     powerup = PowerupMinimizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50, "assets/powerup-mini-ball.png")
-  elseif chance > 0  and chance < 20 then --
+  elseif chance > 0  and chance < 15 then --
     powerup = PowerupMaximizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50, "assets/powerup-maxi-ball.png")
   end

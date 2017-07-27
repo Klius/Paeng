@@ -121,8 +121,6 @@ postEffect:draw(function()
             love.graphics.setColor(2,156,24,255)
             p1:draw()
             p2:draw()
-            
-            
 
           end) 
 
