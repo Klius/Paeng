@@ -11,6 +11,7 @@ function love.load()
   require "Objects/powerup-maximize-ball"
   require "Objects/powerup-maximize-pala"
   require "Objects/powerup-minimize-pala"
+  require "Objects/powerup-confusion-pala"
   require "Objects/powerup-pool"
   --shader
   shine = require "libs/shine"

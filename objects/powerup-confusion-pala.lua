@@ -5,7 +5,7 @@ function PowerupConfusionPala:new(x, y, width, height)
     self.applies = "other"
     self.player = 0 
     self.type = "conf"
-    self.newSize = 300
-    self.defaultSize = 200
+    self.up = "w"
+    self.down = "s"
     PowerupConfusionPala.super.new(self, x, y, width, height, self.sprite, 5, 5)
 end

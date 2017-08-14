@@ -38,7 +38,11 @@ function Pala:applyPowerup(powerup)
       self.y = self.y + powerup.newSize/2
     end
     self.height = powerup.newSize
-    
+  elseif powerup.type == "conf" then
+    powerup.up = self.upkey
+    powerup.down = self.downkey
+    self.upkey = powerup.down
+    self.downkey = powerup.up
   end
 end
 
@@ -47,5 +51,8 @@ function Pala:deapplyPowerup(powerup)
     self.speed = powerup.defaultSpeed
   elseif powerup.type == "maxi" or powerup.type == "mini" then
     self.height = powerup.defaultSize
+  elseif powerup.type == "conf" then
+    self.upkey = powerup.up
+    self.downkey = powerup.down
   end
 end
