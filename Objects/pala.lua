@@ -8,6 +8,7 @@ function Pala:new(x, y, width, height,upkey,downkey)
     self.upkey = upkey
     self.downkey = downkey
     self.score = 0
+    self.color = { 2,156,24,255} --holds the color depending on the powerup
 end
 --This is where it moves and is checked!
 function Pala:update(dt,world)
@@ -26,7 +27,9 @@ function Pala:update(dt,world)
 end
 
 function Pala.draw(self)
+  love.graphics.setColor( self.color)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+  
 end
 
 function Pala:applyPowerup(powerup)
