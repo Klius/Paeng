@@ -5,6 +5,7 @@ function PowerupSpeed:new(x, y, width, height, sprite)
     self.applies = "same"
     self.player = 0 
     self.type = "speed"
+    self.isGood = true
     self.newSpeed = 600
     self.defaultSpeed = 400
 end

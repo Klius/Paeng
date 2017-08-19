@@ -5,6 +5,7 @@ function PowerupMaximizePala:new(x, y, width, height)
     self.applies = "same"
     self.player = 0 
     self.type = "maxi"
+    self.isGood = true
     self.newSize = 300
     self.defaultSize = 200
     PowerupMaximizePala.super.new(self, x, y, width, height, self.sprite, 5, 5)

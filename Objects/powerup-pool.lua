@@ -31,7 +31,7 @@ end
 
 function PowerupPool:spawnPowerup() 
   local chance = self.rng:random(0,100)
-  if  chance > 0 then
+  if  chance < 0 then
   powerup = PowerupConfusionPala(self.rng:random(self.spawnPoint["minX"],
                                 self.spawnPoint["maxX"]), 
                                 self.rng:random(self.spawnPoint["minY"],

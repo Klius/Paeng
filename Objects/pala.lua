@@ -46,6 +46,12 @@ function Pala:applyPowerup(powerup)
     powerup.down = self.downkey
     self.upkey = powerup.down
     self.downkey = powerup.up
+    
+  end
+  if powerup.isGood then
+    self.color = {100,150,255,255}--blue
+  else
+    self.color = {173,51,48,255} --red
   end
 end
 
@@ -58,4 +64,5 @@ function Pala:deapplyPowerup(powerup)
     self.upkey = powerup.up
     self.downkey = powerup.down
   end
+  self.color = { 2,156,24,255}
 end
