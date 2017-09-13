@@ -8,11 +8,8 @@ function Pala:new(x, y, width, height,upkey,downkey,wall)
     self.upkey = upkey
     self.downkey = downkey
     self.score = 0
-<<<<<<< HEAD
     self.wall = wall
-=======
     self.color = { 2,156,24,255} --holds the color depending on the powerup
->>>>>>> f941b233b6e10eaf99c3839b45e934d99b49e2ad
 end
 --This is where it moves and is checked!
 function Pala:update(dt,world)
@@ -33,13 +30,9 @@ end
 function Pala.draw(self)
   love.graphics.setColor( self.color)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
-<<<<<<< HEAD
   if self.wall.isAlive then
     self.wall:draw()
   end
-=======
-  
->>>>>>> f941b233b6e10eaf99c3839b45e934d99b49e2ad
 end
 
 function Pala:applyPowerup(powerup)
