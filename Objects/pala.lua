@@ -51,7 +51,7 @@ function Pala:applyPowerup(powerup)
     self.downkey = powerup.up
     
   end
-  if powerup.isGood then
+  if powerup.isGood and self.color ~= {173,51,48,255} then
     self.color = {100,150,255,255}--blue
   else
     self.color = {173,51,48,255} --red

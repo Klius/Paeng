@@ -5,6 +5,7 @@ function PowerupWall:new(x, y, width, height)
     self.applies = "same"
     self.player = 0 
     self.type = "wall"
+    self.isGood = true
     self.totalFrames = 8
     PowerupWall.super.new(self, x, y, width, height, self.sprite, 5, 5,self.totalFrames)
 end

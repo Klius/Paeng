@@ -74,8 +74,13 @@ function love.update(dt)
     --Collision
     ball:checkCollision(p1)
     ball:checkCollision(p2)
-    ball:checkCollision(p1.wall)
-    ball:checkCollision(p2.wall)
+    if p1.wall.isAlive then
+      ball:checkCollision(p1.wall)
+    end
+    if p2.wall.isAlive then
+      ball:checkCollision(p2.wall)
+    end
+    
     for key,powerup in pairs(powerupPool.powerups) do
       if powerup.spawned then
         
