@@ -7,5 +7,5 @@ function PowerupMinimizePala:new(x, y, width, height)
     self.type = "mini"
     self.newSize = 100
     self.defaultSize = 200
-    PowerupMinimizePala.super.new(self, x, y, width, height, self.sprite, 5, 5)
+    PowerupMinimizePala.super.new(self, x, y, width, height, self.sprite, 5, 5, 4)
 end

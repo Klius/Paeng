@@ -1,6 +1,6 @@
 Powerup = Drawable:extend()
 
-function Powerup:new(x, y, width, height, sprite, duration, durationOfSpawn)
+function Powerup:new(x, y, width, height, sprite, duration, durationOfSpawn,totalFrames)
     Powerup.super.new(self, x, y)
     self.width = width
     self.height = height
@@ -14,11 +14,11 @@ function Powerup:new(x, y, width, height, sprite, duration, durationOfSpawn)
     self.durationOfSpawn = durationOfSpawn
     self.durationOfFrame = 0.3
     self.currentFrame = 0
-    self.totalFrames = 4
+    self.totalFrames = totalFrames
     self.frames = { }
     local fx = 0
     local fy = 0
-    for i=0,5 do
+    for i=0,self.totalFrames+1 do
       local frame = love.graphics.newQuad(fx, fy, 50, 50, self.sprite:getDimensions())
       self.frames[i]=frame
       fx = fx+50

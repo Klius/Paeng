@@ -7,5 +7,5 @@ function PowerupMaximizePala:new(x, y, width, height)
     self.type = "maxi"
     self.newSize = 300
     self.defaultSize = 200
-    PowerupMaximizePala.super.new(self, x, y, width, height, self.sprite, 5, 5)
+    PowerupMaximizePala.super.new(self, x, y, width, height, self.sprite, 5, 5,4)
 end

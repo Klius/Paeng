@@ -7,5 +7,5 @@ function PowerupConfusionPala:new(x, y, width, height)
     self.type = "conf"
     self.up = "w"
     self.down = "s"
-    PowerupConfusionPala.super.new(self, x, y, width, height, self.sprite, 5, 5)
+    PowerupConfusionPala.super.new(self, x, y, width, height, self.sprite, 5, 5, 4)
 end

@@ -7,12 +7,15 @@ function love.load()
   require "Objects/bola"
   require "Objects/powerup"
   require "Objects/powerup-speed"
+  require "Objects/powerup-wall"
   require "Objects/powerup-minimize-ball"
   require "Objects/powerup-maximize-ball"
   require "Objects/powerup-maximize-pala"
   require "Objects/powerup-minimize-pala"
   require "Objects/powerup-confusion-pala"
   require "Objects/powerup-pool"
+  require "Objects/wall"
+  
   --shader
   shine = require "libs/shine"
   sketch = shine.sketch()
@@ -22,8 +25,8 @@ function love.load()
   god = shine.godsray()
   postEffect = glow:chain(scanline):chain(sketch)--:chain(crt)
   --setup players
-  p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s")
-  p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down")
+  p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s", Wall(0,0))
+  p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down",Wall(love.graphics.getWidth()-40,0))
   ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,25)
   --Background
   love.graphics.setColor(2,156,24,255)
@@ -71,6 +74,8 @@ function love.update(dt)
     --Collision
     ball:checkCollision(p1)
     ball:checkCollision(p2)
+    ball:checkCollision(p1.wall)
+    ball:checkCollision(p2.wall)
     for key,powerup in pairs(powerupPool.powerups) do
       if powerup.spawned then
         
@@ -122,7 +127,6 @@ postEffect:draw(function()
             love.graphics.setColor(2,156,24,255)
             p1:draw()
             p2:draw()
-
           end) 
 
 

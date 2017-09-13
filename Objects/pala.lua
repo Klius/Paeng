@@ -1,13 +1,14 @@
 --! file: pala.lua
 Pala = Drawable:extend()
 
-function Pala:new(x, y, width, height,upkey,downkey)
+function Pala:new(x, y, width, height,upkey,downkey,wall)
     Pala.super.new(self, x, y)
     self.width = width
     self.height = height
     self.upkey = upkey
     self.downkey = downkey
     self.score = 0
+    self.wall = wall
 end
 --This is where it moves and is checked!
 function Pala:update(dt,world)
@@ -27,6 +28,9 @@ end
 
 function Pala.draw(self)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+  if self.wall.isAlive then
+    self.wall:draw()
+  end
 end
 
 function Pala:applyPowerup(powerup)

@@ -1,7 +1,7 @@
 PowerupSpeed = Powerup:extend()
 
 function PowerupSpeed:new(x, y, width, height, sprite)
-    PowerupSpeed.super.new(self, x, y, width, height, sprite, 5, 5)
+    PowerupSpeed.super.new(self, x, y, width, height, sprite, 5, 5, 4)
     self.applies = "same"
     self.player = 0 
     self.type = "speed"
