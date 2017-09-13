@@ -23,7 +23,7 @@ function love.load()
   scanline = shine.scanlines()
   glow = shine.glowsimple()
   god = shine.godsray()
-  postEffect = glow:chain(scanline):chain(sketch)--:chain(crt)
+  postEffect = glow:chain(scanline):chain(sketch)--:chain(god)
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s", Wall(0,0))
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down",Wall(love.graphics.getWidth()-40,0))
