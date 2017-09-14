@@ -49,7 +49,8 @@ function Pala:applyPowerup(powerup)
     powerup.down = self.downkey
     self.upkey = powerup.down
     self.downkey = powerup.up
-    
+  elseif powerup.type == "wall" then
+    self.wall.isAlive = true  
   end
   if powerup.isGood and self.color ~= {173,51,48,255} then
     self.color = {100,150,255,255}--blue
@@ -66,6 +67,9 @@ function Pala:deapplyPowerup(powerup)
   elseif powerup.type == "conf" then
     self.upkey = powerup.up
     self.downkey = powerup.down
+  elseif powerup.type == "wall" then
+    self.wall.isAlive = false
   end
   self.color = { 2,156,24,255}
 end
+
