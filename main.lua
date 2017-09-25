@@ -189,10 +189,10 @@ function love.keypressed(key)
     end
    end
    if key == "p" then
-      if pause then
-        pause = false
+      if currentState == states.pause then
+        currentState = states.game
       else
-        pause = true
+        currentState = states.pause
       end
    end
 end
