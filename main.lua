@@ -2,7 +2,6 @@ function love.load()
   --baseclass to all objects
   Object = require "libs/classic"
   --Objects
-  require "Objects/game"
   require "Objects/drawable"
   require "Objects/pala"
   require "Objects/bola"
@@ -17,7 +16,13 @@ function love.load()
   require "Objects/powerup-pool"
   require "Objects/wall"
   --
-  game = Game()
+  states = {
+              menu = 0,
+              game = 1,
+              pause = 2,
+              over = 3
+            }
+  currentState = states.game
   --shader
   shine = require "libs/shine"
   sketch = shine.sketch()
@@ -72,7 +77,7 @@ function randompassword()
 end
 
 function love.update(dt)
-  if pause == false and game.start == true then
+  if currentState == states.game then
     --Collision
     ball:checkCollision(p1)
     ball:checkCollision(p2)
