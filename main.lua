@@ -15,6 +15,8 @@ function love.load()
   require "Objects/powerup-confusion-pala"
   require "Objects/powerup-pool"
   require "Objects/wall"
+  require "Objects/menu"
+  require "Objects/menuOption"
   --
   states = {
               menu = 0,
@@ -22,7 +24,8 @@ function love.load()
               pause = 2,
               over = 3
             }
-  currentState = states.game
+  currentState = states.menu
+  menu = Menu()
   --shader
   shine = require "libs/shine"
   sketch = shine.sketch()
@@ -51,6 +54,7 @@ function love.load()
   pause = false
   --Fonts
   bigFont = love.graphics.newFont(100)
+  mediumFont = love.graphics.newFont(30)
   debugFont = love.graphics.newFont(14)
   --math
   floor = math.floor
@@ -78,7 +82,22 @@ end
 
 function love.update(dt)
   if currentState == states.game then
-    --Collision
+    checkCollision()
+  ---Updates
+    
+    p1:update(dt)
+    p2:update(dt)
+    ball:update(dt)
+    
+    powerupPool:update(dt)
+    ----
+    isGoal()
+  elseif currentState == states.menu then
+    
+  end
+end
+function checkCollision()
+--Collision
     ball:checkCollision(p1)
     ball:checkCollision(p2)
     if p1.wall.isAlive then
@@ -115,65 +134,31 @@ function love.update(dt)
           end
           powerup.dead = true  
       end
-    end
-  ---Updates
-    
-    p1:update(dt)
-    p2:update(dt)
-    ball:update(dt)
-    
-    powerupPool:update(dt)
-    ----
-    isGoal()
-  end
+    end  
 end
-
 function love.draw()
-  
-postEffect:draw(function()
-            love.graphics.setColor(255,255,255,255)
-            love.graphics.draw(background)
-            powerupPool:draw()
-            ball:draw()
-            drawScore()
-            love.graphics.setColor(2,156,24,255)
-            p1:draw()
-            p2:draw()
-          end) 
-
-
+  if currentState == states.game then
+    postEffect:draw(
+              function()
+                love.graphics.setColor(255,255,255,255)
+                love.graphics.draw(background)
+                powerupPool:draw()
+                ball:draw()
+                drawScore()
+                love.graphics.setColor(2,156,24,255)
+                p1:draw()
+                p2:draw()
+              end) 
+  end
+  if currentState == states.menu then
+    --print main menu
+    menu:draw()
+    --love.graphics.print()
+  end
     
   --Debug
   if debug then
-    love.graphics.setFont(debugFont)
-    --player1
-    love.graphics.print("Player 1",0,0)
-    love.graphics.print("x:"..p1.x,0,15)
-    love.graphics.print("y:"..p1.y,0,30)
-    love.graphics.print("score:"..p1.score,0,45)
-    love.graphics.print("speed:"..p1.speed,0,60)
-    --player2
-    love.graphics.print("Player 2",150,0)
-    love.graphics.print("x:"..p2.x,150,15)
-    love.graphics.print("y:"..p2.y,150,30)
-    love.graphics.print("score:"..p2.score,150,45)
-    love.graphics.print("speed:"..p2.speed,150,60)
-    --Ball
-    love.graphics.print("Ball",300,0)
-    love.graphics.print("x:"..ball.x,300,15)
-    love.graphics.print("y:"..ball.y,300,30)
-    love.graphics.print('Speed:' .. ball.speed,300,45)
-    love.graphics.print('Color:' .. ball.colorLevel,300,60)
-    love.graphics.print('Size:' .. ball.radius,300,75)
-    --Other
-    love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",550,0)
-    love.graphics.print('FPS:'..love.timer.getFPS( ),550,15)
-    love.graphics.print('TIME:'..love.timer.getTime()- startTime ,550,30)
-    for key,powerup in pairs(powerupPool.powerups) do
-      if powerup.spawned then
-        love.graphics.print("Duration of Spawn"..powerup.durationOfSpawn,powerup.x+15,powerup.y-15)
-      end
-    end
+    drawDebug()
   end
 end
 
@@ -207,8 +192,41 @@ function isGoal()
     p2.score = p2.score+1
   end
 end
+
 function drawScore()
   love.graphics.setFont(bigFont)
   love.graphics.print(p1.score, love.graphics.getWidth()/2-150, 0)
   love.graphics.print(p2.score, love.graphics.getWidth()/2+100, 0)
+end
+
+function drawDebug()
+  love.graphics.setFont(debugFont)
+    --player1
+    love.graphics.print("Player 1",0,0)
+    love.graphics.print("x:"..p1.x,0,15)
+    love.graphics.print("y:"..p1.y,0,30)
+    love.graphics.print("score:"..p1.score,0,45)
+    love.graphics.print("speed:"..p1.speed,0,60)
+    --player2
+    love.graphics.print("Player 2",150,0)
+    love.graphics.print("x:"..p2.x,150,15)
+    love.graphics.print("y:"..p2.y,150,30)
+    love.graphics.print("score:"..p2.score,150,45)
+    love.graphics.print("speed:"..p2.speed,150,60)
+    --Ball
+    love.graphics.print("Ball",300,0)
+    love.graphics.print("x:"..ball.x,300,15)
+    love.graphics.print("y:"..ball.y,300,30)
+    love.graphics.print('Speed:' .. ball.speed,300,45)
+    love.graphics.print('Color:' .. ball.colorLevel,300,60)
+    love.graphics.print('Size:' .. ball.radius,300,75)
+    --Other
+    love.graphics.print('Mem Used:'..floor(collectgarbage("count")).."KB",550,0)
+    love.graphics.print('FPS:'..love.timer.getFPS( ),550,15)
+    love.graphics.print('TIME:'..love.timer.getTime()- startTime ,550,30)
+    for key,powerup in pairs(powerupPool.powerups) do
+      if powerup.spawned then
+        love.graphics.print("Duration of Spawn"..powerup.durationOfSpawn,powerup.x+15,powerup.y-15)
+      end
+    end
 end
