@@ -17,6 +17,7 @@ function love.load()
   require "Objects/wall"
   require "Objects/menu"
   require "Objects/menuOption"
+  require "Objects/menuDrawable"
   --
   states = {
               menu = 0,
@@ -58,7 +59,7 @@ function love.load()
   debugFont = love.graphics.newFont(14)
   --math
   floor = math.floor
-  music = love.audio.newSource("assets/sfx/loop.wav")
+  music = love.audio.newSource("assets/sfx/aqua-loop.wav")
   music:setLooping(true)
   music:setVolume(0.5)
   music:play()
@@ -93,7 +94,7 @@ function love.update(dt)
     ----
     isGoal()
   elseif currentState == states.menu then
-    
+    menu:update(dt)
   end
 end
 function checkCollision()
