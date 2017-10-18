@@ -27,10 +27,11 @@ function MenuDrawable:update(dt)
   if self.durationOfFrame < 0 then
     self.durationOfFrame = 0.1
     self.currentFrame = self.currentFrame + 1
-    if self.currentFrame > self.totalFrames then self.currentFrame = 0 end
+    if self.currentFrame >= self.totalFrames then self.currentFrame = 0 end
   end
 end
 
 function MenuDrawable:changeVerticalPos(newY) 
   self.y = newY
+--  self.currentFrame = 24
 end
