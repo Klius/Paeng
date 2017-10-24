@@ -18,17 +18,8 @@ function Bola:new(x, y, radius)
                   }
     self.colorLevel = 1
     self.angle = 0
-    self:initSound()
-    self.currentSound = 1 
 end
 
-function Bola:initSound()
-  self.collisionSFX = {}
-  for i=1,8,1 do
-    src = love.audio.newSource("assets/sfx/ball-"..i..".ogg",static)
-    table.insert(self.collisionSFX,src)
-  end
-end
 
 function Bola:update(dt)
   self:updateColorLevel()
@@ -38,12 +29,12 @@ function Bola:update(dt)
   if (self.y < 0) then
     self.y = 0
     self.speedY = self.speedY *-1
-    self.collisionSFX[self:nextSound()]:play()
+    audioManager:PlayChime()
   elseif (self.y+self.radius > love.graphics.getHeight()) then
     
     self.y = love.graphics.getHeight() - self.radius
     self.speedY = self.speedY *-1
-    self.collisionSFX[self:nextSound()]:play()
+    audioManager:PlayChime()
   end
   self.angle = self.angle + dt * math.pi/2
 	self.angle = self.angle % (2*math.pi)
@@ -127,8 +118,7 @@ function Bola:checkCollision(player)
     self.x = self.x + (self.speed*love.timer.getDelta())
 
     self:moreSpeed()
-    self.collisionSFX[self:nextSound()]:play()
-    --self.collisionSFX[math.random(1,7)]:play()
+    audioManager:PlayChime()
   end
 end
 
@@ -160,13 +150,7 @@ function Bola:checkCollisionPowerup(powerup)
   end
 end
 
-function Bola:nextSound()
-  self.currentSound = self.currentSound + 1
-  if self.currentSound > 8 then
-    self.currentSound = 1
-  end
-  return self.currentSound
-end
+
 
 function Bola:applyPowerup(powerup)
   if powerup.type == "mini" or powerup.type == "maxi" then

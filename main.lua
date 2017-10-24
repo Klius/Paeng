@@ -19,6 +19,7 @@ function love.load()
   require "Objects/menu"
   require "Objects/menuoption"
   require "Objects/menudrawable"
+  require "Objects/menucheck"
   --Other libs
   json = require "libs/json"
   shine = require "libs/shine"
