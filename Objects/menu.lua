@@ -32,9 +32,11 @@ function Menu:update(dt)
   elseif love.keyboard.isDown("up") and self.timeToMove <= 0 then
     self.selectedOption = self.selectedOption + 1
     self.timeToMove = self.delay
+    audioManager:PlayChime()
   elseif love.keyboard.isDown("down") and self.timeToMove <= 0 then
     self.selectedOption = self.selectedOption - 1
     self.timeToMove = self.delay
+    audioManager:PlayChime()
   end
   
   if self.selectedOption < 1 then

@@ -15,9 +15,13 @@ function love.load()
   require "Objects/powerup-confusion-pala"
   require "Objects/powerup-pool"
   require "Objects/wall"
+  require "Objects/music"
   require "Objects/menu"
-  require "Objects/menuOption"
-  require "Objects/menuDrawable"
+  require "Objects/menuoption"
+  require "Objects/menudrawable"
+  --Other libs
+  json = require "libs/json"
+  shine = require "libs/shine"
   --
   states = {
               menu = 0,
@@ -25,20 +29,30 @@ function love.load()
               pause = 2,
               over = 3
             }
+  --set current state to menu and load menu
   currentState = states.menu
   menu = Menu()
-  --shader
-  shine = require "libs/shine"
+  
+  -- load config flags
+  
+  local confString = love.filesystem.read("config.js")
+  config = json.parse(confString)
+  
+  --LOAD shader
   sketch = shine.sketch()
   scanline = shine.scanlines()
   glow = shine.glowsimple()
   god = shine.godsray()
   postEffect = glow:chain(scanline):chain(sketch)--:chain(god)
   menuEffect = glow:chain(scanline)
+  
+  
   --setup players
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s", Wall(0,0))
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down",Wall(love.graphics.getWidth()-40,0))
   ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,25)
+  
+  
   --Background
   love.graphics.setColor(2,156,24,255)
   background = love.graphics.newCanvas()
@@ -59,10 +73,8 @@ function love.load()
   debugFont = love.graphics.newFont(14)
   --math
   floor = math.floor
-  music = love.audio.newSource("assets/sfx/aqua-loop.wav")
-  music:setLooping(true)
-  music:setVolume(0.5)
-  music:play()
+  --music
+  audioManager = MusicManager()
   ---Powerup test
   powerupPool = PowerupPool()
   --timing debug 
@@ -95,6 +107,9 @@ function love.update(dt)
     isGoal()
   elseif currentState == states.menu then
     menu:update(dt)
+  end
+  if(config["sound"]) then
+    audioManager:PlayMusic()
   end
 end
 function checkCollision()
