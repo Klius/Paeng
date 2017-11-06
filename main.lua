@@ -30,15 +30,14 @@ function love.load()
               pause = 2,
               over = 3
             }
-  --set current state to menu and load menu
-  currentState = states.menu
-  menu = Menu()
-  
-  -- load config flags
+-- load config flags
   
   local confString = love.filesystem.read("config.js")
   config = json.parse(confString)
   
+  --set current state to menu and load menu
+  currentState = states.menu
+  menu = Menu()
   --LOAD shader
   sketch = shine.sketch()
   scanline = shine.scanlines()

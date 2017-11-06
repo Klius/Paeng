@@ -1,11 +1,12 @@
 MenuCheck = Drawable:extend()
 
-function MenuCheck:new()
-  self.label = "test"
-  self.checked = true
+function MenuCheck:new(label, x, y, checked)
+  self.label = label
+  self.checked = checked
+  self.selected = false
   self.sprite = love.graphics.newImage("assets/menu-checkbox.png")
-  self.x = 200;
-  self.y = 400;
+  self.x = x;
+  self.y = y;
   self.selectedFrame = 0
   self.frames = { }
   self.totalFrames = 1
@@ -19,10 +20,14 @@ function MenuCheck:new()
 end
 
 function MenuCheck:draw()
-  love.graphics.setColor(255,255,255,255)
+  if (self.selected) then
+    love.graphics.setColor(255,255,255,255)
+  else 
+    love.graphics.setColor(2,156,24,255)
+  end
   love.graphics.print(self.label,self.x,self.y)
-  love.graphics.draw(self.sprite,self.frames[self.selectedFrame], self.x+100, self.y)
   love.graphics.setColor(255,255,255,255)
+  love.graphics.draw(self.sprite,self.frames[self.selectedFrame], self.x+200, self.y)
 end
 
 function MenuCheck:Update()

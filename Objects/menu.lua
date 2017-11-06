@@ -7,23 +7,38 @@ function Menu:new()
                   options = 2
                 }
   self.subMenu = {
-                    score = 1,
-                    audio = 2,
-                    bigBall = 3,
-                    smallBall = 4,
-                    bigPaddle =5,
-                    smallPaddle = 6,
-                    wall = 7,
-                    back = 8
+                    --score = 1,
+                    audio = 1,
+                    bigBall = 2,
+                    smallBall = 3,
+                    bigPaddle = 4,
+                    smallPaddle = 5,
+                    wall = 6,
+                    back = 7
                     
                   }
   self.inOptions = false
   self.timeToMove = 0
   self.delay = 0.2
-  self.newGame = MenuOption(love.graphics.getWidth()/2-75,love.graphics.getHeight()/2,"New Geim",true, true)
-  self.option = MenuOption(love.graphics.getWidth()/2-75,love.graphics.getHeight()/2+50,"Options",false, false)
+  x = love.graphics.getWidth()/2-75
+  self.newGame = MenuOption(x,love.graphics.getHeight()/2,"Start Match",true, true)
+  self.option = MenuOption(x,love.graphics.getHeight()/2+50,"Options",true, false)
   self.arrow = MenuDrawable(self.newGame.x-40, self.newGame.y, 32, 32, "assets/fletxa.png", 23)
-  self.menuchecktest = MenuCheck()
+  self.submenuchecks = self.getMenuChecks()
+end
+
+function Menu:getMenuChecks()
+  x = love.graphics.getWidth()/2-75
+  checks = {
+            MenuCheck("Audio",x,150,config["sound"]),
+            MenuCheck("MaxiBall",x,200,config["sound"]),
+            MenuCheck("MiniBall",x,250,config["sound"]),
+            MenuCheck("MaxiPaddle",x,300,config["sound"]),
+            MenuCheck("MiniPaddle",x,350,config["sound"]),
+            MenuCheck("Wall",x,400,config["sound"]),
+            MenuOption( x, 500, "Back", true, false)
+            }
+  return checks
 end
 
 function Menu:draw()
@@ -32,7 +47,9 @@ function Menu:draw()
       love.graphics.setFont(bigFont)
       love.graphics.print("OPTIONS", love.graphics.getWidth()/2-220, 0)
       love.graphics.setFont(mediumFont)
-      self.menuchecktest:draw()
+      for key,option in pairs(self.submenuchecks) do 
+        option:draw()
+      end
       self.arrow:draw()
     else
       love.graphics.setColor(2,156,24,255)
@@ -71,10 +88,29 @@ function Menu:subMenuUpdate(dt)
     self.timeToMove = self.delay
     audioManager:PlayChime()
   end
+  
   if self.selectedOption < 1 then
-    self.selectedOption = 8
-  elseif self.selectedOption > 8 then
+    self.selectedOption = 7
+  elseif self.selectedOption > 7 then
     self.selectedOption = 1
+  end
+  
+  self:subMenuDeselect()
+  self.submenuchecks[self.selectedOption].selected = true
+  self.arrow:changeVerticalPos(self.submenuchecks[self.selectedOption].y)
+  
+  if self.selectedOption == self.subMenu.audio then
+    
+  elseif self.selectedOption == self.subMenu.audio then
+    self.newGame.selected = false 
+    self.option.selected = true
+    self.arrow:changeVerticalPos(self.option.y)
+  end
+end
+
+function Menu:subMenuDeselect()
+  for key,option in pairs(self.submenuchecks) do 
+    option.selected = false
   end
 end
 function Menu:mainMenuUpdate(dt) 
@@ -83,7 +119,7 @@ function Menu:mainMenuUpdate(dt)
       currentState = states.game
     elseif self.selectedOption == self.options.options then
       self.inOptions = true
-      self.selectedOption = self.subMenu.score
+      self.selectedOption = self.subMenu.audio
     end
     self.timeToMove = self.delay
   elseif love.keyboard.isDown("up") and self.timeToMove <= 0 then
@@ -112,3 +148,4 @@ function Menu:mainMenuUpdate(dt)
     self.arrow:changeVerticalPos(self.option.y)
   end
 end
+
