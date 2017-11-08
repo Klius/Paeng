@@ -17,3 +17,5 @@ function MenuOption:draw()
     love.graphics.print(self.text,self.x,self.y)
     love.graphics.setColor(255,255,255,255)
 end
+function MenuOption:Update()
+end

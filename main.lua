@@ -110,6 +110,8 @@ function love.update(dt)
   end
   if(config["sound"]) then
     audioManager:PlayMusic()
+  else
+    audioManager:StopMusic()
   end
 end
 function checkCollision()

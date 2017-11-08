@@ -23,6 +23,9 @@ function MusicManager:PlayMusic()
       self.currentMusic:play()
     end
 end
+function MusicManager:StopMusic()
+  self.currentMusic:stop()
+end
 
 function MusicManager:PlayChime()
   self.chime:stop()

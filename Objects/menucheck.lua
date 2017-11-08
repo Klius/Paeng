@@ -1,6 +1,7 @@
 MenuCheck = Drawable:extend()
 
-function MenuCheck:new(label, x, y, checked)
+function MenuCheck:new(label, x, y, checked, configKey)
+  self.configKey = configKey
   self.label = label
   self.checked = checked
   self.selected = false
@@ -36,4 +37,16 @@ function MenuCheck:Update()
   else
     self.selectedFrame = 1
   end
+end
+
+function MenuCheck:Check()
+  if self.checked == true then
+    self.checked = false
+  else
+    self.checked = true
+  end
+end
+
+function MenuCheck:Save()
+  config[self.configKey] = self.checked
 end

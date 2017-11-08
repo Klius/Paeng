@@ -30,12 +30,12 @@ end
 function Menu:getMenuChecks()
   x = love.graphics.getWidth()/2-75
   checks = {
-            MenuCheck("Audio",x,150,config["sound"]),
-            MenuCheck("MaxiBall",x,200,config["sound"]),
-            MenuCheck("MiniBall",x,250,config["sound"]),
-            MenuCheck("MaxiPaddle",x,300,config["sound"]),
-            MenuCheck("MiniPaddle",x,350,config["sound"]),
-            MenuCheck("Wall",x,400,config["sound"]),
+            MenuCheck("Audio",x,150,config["sound"],"sound"),
+            MenuCheck("MaxiBall",x,200,config["pow-maxi-ball"],"pow-maxi-ball"),
+            MenuCheck("MiniBall",x,250,config["pow-mini-ball"],"pow-mini-ball"),
+            MenuCheck("MaxiPaddle",x,300,config["pow-maxi-pala"],"pow-max-pala"),
+            MenuCheck("MiniPaddle",x,350,config["pow-mini-pala"],"pow-mini-pala"),
+            MenuCheck("Wall",x,400,config["pow-wall"],"pow-wall"),
             MenuOption( x, 500, "Back", true, false)
             }
   return checks
@@ -64,7 +64,6 @@ end
 function Menu:update(dt)
   self.arrow:update(dt)
   self.timeToMove = self.timeToMove - dt
-
   if self.inOptions then
     self:subMenuUpdate(dt)
   else
@@ -77,6 +76,9 @@ function Menu:subMenuUpdate(dt)
     if self.selectedOption == self.subMenu.back then
       self.inOptions = false
       self.selectedOption = 2
+      self:SaveConfig()
+    else
+      self.submenuchecks[self.selectedOption]:Check()
     end
     self.timeToMove = self.delay
   elseif love.keyboard.isDown("up") and self.timeToMove <= 0 then
@@ -98,13 +100,8 @@ function Menu:subMenuUpdate(dt)
   self:subMenuDeselect()
   self.submenuchecks[self.selectedOption].selected = true
   self.arrow:changeVerticalPos(self.submenuchecks[self.selectedOption].y)
-  
-  if self.selectedOption == self.subMenu.audio then
-    
-  elseif self.selectedOption == self.subMenu.audio then
-    self.newGame.selected = false 
-    self.option.selected = true
-    self.arrow:changeVerticalPos(self.option.y)
+  for key,option in pairs(self.submenuchecks) do 
+    option:Update()
   end
 end
 
@@ -146,6 +143,12 @@ function Menu:mainMenuUpdate(dt)
     self.newGame.selected = false 
     self.option.selected = true
     self.arrow:changeVerticalPos(self.option.y)
+  end
+end
+
+function Menu:SaveConfig()
+  for i=1,6 do
+    self.submenuchecks[i]:Save()
   end
 end
 
