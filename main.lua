@@ -95,16 +95,20 @@ end
 
 function love.update(dt)
   if currentState == states.game then
-    checkCollision()
-  ---Updates
-    
-    p1:update(dt)
-    p2:update(dt)
-    ball:update(dt)
-    
-    powerupPool:update(dt)
-    ----
-    isGoal()
+    if p1.score >= config["score-limit"] or p2.score >= config["score-limit"] then
+      currentState = states.over
+    else 
+      checkCollision()
+    ---Updates
+      
+      p1:update(dt)
+      p2:update(dt)
+      ball:update(dt)
+      
+      powerupPool:update(dt)
+      ----
+      isGoal()
+    end
   elseif currentState == states.menu then
     menu:update(dt)
   end
