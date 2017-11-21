@@ -1,6 +1,6 @@
 MenuDrawable = Drawable:extend()
 
-function MenuDrawable:new(x, y, width, height, sprite, totalFrames)
+function MenuDrawable:new(x, y, width, height, sprite, totalFrames, durationOfFrame, orientation)
     self.x = x
     self.y = y
     self.width = width
@@ -9,13 +9,19 @@ function MenuDrawable:new(x, y, width, height, sprite, totalFrames)
     self.currentFrame = 0
     self.sprite = love.graphics.newImage(sprite)
     self.frames = { }
-    self.durationOfFrame = 0.1
+    self.durationOfFrame = durationOfFrame or 0.1
+    self.freimes = self.durationOfFrame
+    self.orientation = orientation or false -- if false horizontal// true vertical
     local fx = 0
     local fy = 0
     for i=0,self.totalFrames+1 do
-      local frame = love.graphics.newQuad(fx, fy, 32, 32, self.sprite:getDimensions())
+      local frame = love.graphics.newQuad(fx, fy, self.width, self.height, self.sprite:getDimensions())
       self.frames[i]=frame
-      fx = fx+32
+      if self.orientation then
+        fy = fy+self.height
+      else
+        fx = fx+self.width
+      end
     end
 end
 function MenuDrawable:draw()
@@ -23,9 +29,9 @@ function MenuDrawable:draw()
 end
 
 function MenuDrawable:update(dt)
-  self.durationOfFrame = self.durationOfFrame - dt
-  if self.durationOfFrame < 0 then
-    self.durationOfFrame = 0.1
+  self.freimes = self.freimes - dt
+  if self.freimes < 0 then
+    self.freimes = self.durationOfFrame
     self.currentFrame = self.currentFrame + 1
     if self.currentFrame >= self.totalFrames then self.currentFrame = 0 end
   end

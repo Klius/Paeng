@@ -6,6 +6,6 @@
   "pow-mini-pala" : true,
   "pow-speed" : true,
   "pow-wall" : true,
-  "sound" : true,
-  "score-limit" : 11 
+  "sound" : false,
+  "score-limit" : 6 
 }

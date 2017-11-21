@@ -20,6 +20,8 @@ function love.load()
   require "Objects/menuoption"
   require "Objects/menudrawable"
   require "Objects/menucheck"
+  require "Objects/match-over"
+  require "Objects/anouncer-text"
   --Other libs
   json = require "libs/json"
   shine = require "libs/shine"
@@ -38,6 +40,8 @@ function love.load()
   --set current state to menu and load menu
   currentState = states.menu
   menu = Menu()
+  -- match over
+  matchover = MatchOver()
   --LOAD shader
   sketch = shine.sketch()
   scanline = shine.scanlines()
@@ -93,6 +97,11 @@ function randompassword()
   return password
 end
 
+
+--*************************
+-- UPDATE
+--*************************
+
 function love.update(dt)
   if currentState == states.game then
     if p1.score >= config["score-limit"] or p2.score >= config["score-limit"] then
@@ -111,6 +120,8 @@ function love.update(dt)
     end
   elseif currentState == states.menu then
     menu:update(dt)
+  elseif currentState == states.over then
+    matchover:update(dt)
   end
   if(config["sound"]) then
     audioManager:PlayMusic()
@@ -158,8 +169,14 @@ function checkCollision()
       end
     end  
 end
+
+
+--------------------------------
+-- DRAW
+--------------------------------
+
 function love.draw()
-  if currentState == states.game then
+  if currentState == states.game or currentState == states.over then
     postEffect:draw(
               function()
                 love.graphics.setColor(255,255,255,255)
@@ -171,6 +188,12 @@ function love.draw()
                 p1:draw()
                 p2:draw()
               end) 
+  end
+  if currentState == states.over then
+    postEffect:draw(
+                  function()
+                    matchover:draw()
+                  end)
   end
   if currentState == states.menu then
     --print main menu
