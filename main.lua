@@ -55,7 +55,7 @@ function love.load()
   p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s", Wall(0,0))
   p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down",Wall(love.graphics.getWidth()-40,0))
   ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,25)
-  
+  winner = 0
   
   --Background
   love.graphics.setColor(2,156,24,255)
@@ -97,7 +97,9 @@ function randompassword()
   return password
 end
 
-
+function reset()
+  
+end
 --*************************
 -- UPDATE
 --*************************
@@ -106,6 +108,11 @@ function love.update(dt)
   if currentState == states.game then
     if p1.score >= config["score-limit"] or p2.score >= config["score-limit"] then
       currentState = states.over
+      if p1.score >= config["score-limit"] then
+        winner = 0
+      elseif p2.score >= config["score-limit"] then
+        winner = 1
+      end
     else 
       checkCollision()
     ---Updates

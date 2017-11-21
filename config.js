@@ -7,5 +7,5 @@
   "pow-speed" : true,
   "pow-wall" : true,
   "sound" : false,
-  "score-limit" : 6 
+  "score-limit" : 1 
 }

@@ -8,9 +8,11 @@ function AnnouncerText:new(x, y, string,speed)
   self.y = y
   self.alpha = 0
   self.speed = speed
+  self.font = love.graphics.newFont(76)
 end
 function AnnouncerText:draw()
   love.graphics.setColor(240, 255, 0,self.alpha)
+  love.graphics.setFont(self.font)
   love.graphics.print(self.string,self.x,self.y)
   love.graphics.setColor(255,255,255,255)
 end
