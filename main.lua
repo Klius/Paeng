@@ -97,8 +97,17 @@ function randompassword()
   return password
 end
 
-function reset()
-  
+function reset(toMenu)
+  p1 = Pala(50,love.graphics.getHeight()/2 -200/2,25,200,"w","s", Wall(0,0))
+  p2 = Pala(love.graphics.getWidth()-75,love.graphics.getHeight()/2 -200/2,25,200,"up","down",Wall(love.graphics.getWidth()-40,0))
+  ball = Bola(love.graphics.getWidth()/2,love.graphics.getHeight()/2,25)
+  winner = 0
+  matchover = MatchOver()
+  if toMenu then
+    currentState = states.menu
+  else
+    currentState = states.game
+  end
 end
 --*************************
 -- UPDATE
@@ -216,7 +225,7 @@ end
 
 function love.keypressed(key)
    if key == "escape" then
-      love.event.quit()
+      --love.event.quit()
    end
    if key == "d" then
     if debug then
