@@ -6,7 +6,7 @@ function MatchOver:new()
 end
 function MatchOver:draw()
   love.graphics.setColor(255,255,255,255)
-  self.messageBackground:draw()
+  god:draw(function()self.messageBackground:draw()end)
   self.announcerText:draw()
 end
 function MatchOver:update(dt)

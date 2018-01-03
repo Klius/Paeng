@@ -150,5 +150,10 @@ function Menu:SaveConfig()
   for i=1,6 do
     self.submenuchecks[i]:Save()
   end
+  --Write to config.js
+    f = love.filesystem.newFile("config.js")
+    f:open("w")
+    f:write(json.stringify(config))
+    f:close()
 end
 

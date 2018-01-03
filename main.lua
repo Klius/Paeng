@@ -224,8 +224,8 @@ function love.draw()
 end
 
 function love.keypressed(key)
-   if key == "escape" then
-      --love.event.quit()
+   if key == "escape" and currentState == states.menu and menu.inOptions == false then
+      love.event.quit()
    end
    if key == "d" then
     if debug then
