@@ -45,7 +45,7 @@ function love.load()
   --LOAD shader
   sketch = shine.sketch()
   scanline = shine.scanlines()
-  glow = shine.glowsimple()
+  glow = shine.glowsimple({sigma=0.3,min_luma=0.2})
   god = shine.godsray()
   postEffect = glow:chain(scanline):chain(sketch)--:chain(god)
   menuEffect = glow:chain(scanline)
@@ -192,7 +192,8 @@ end
 --------------------------------
 
 function love.draw()
-  if currentState == states.game or currentState == states.over then
+  --Where the fuck is the pause menu man
+  if currentState == states.game or currentState == states.over or currentState == states.pause then
     postEffect:draw(
               function()
                 love.graphics.setColor(255,255,255,255)

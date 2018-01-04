@@ -32,25 +32,25 @@ end
 function PowerupPool:spawnPowerup() 
   local chance = self.rng:random(0,100)
 
-  if  chance > 75 and chance < 85 then
+  if  chance > 75 and chance < 85 and config["pow-wall"] then
     powerup = PowerupWall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50)
 --    powerup = PowerupSpeed( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
 --                                  50, 50, "assets/powerup-dummy.png")
-  elseif chance > 65 and chance < 75 then
+  elseif chance > 65 and chance < 75 and config["pow-confusion-pala"] then
     powerup = PowerupConfusionPala(self.rng:random(self.spawnPoint["minX"],
                                   self.spawnPoint["maxX"]), 
                                   self.rng:random(self.spawnPoint["minY"],
                                   self.spawnPoint["maxY"]),50, 50)
-  elseif chance > 50 and chance < 65 then
+  elseif chance > 50 and chance < 65 and config["pow-max-pala"] then
     powerup = PowerupMaximizePala( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50)
-  elseif chance > 30 and chance < 50 then
+  elseif chance > 30 and chance < 50 and config["pow-min-pala"] then
     powerup = PowerupMinimizePala( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),                                  50, 50)
-  elseif chance > 15 and chance < 30 then 
+  elseif chance > 15 and chance < 30 and config["pow-min-ball"] then 
     powerup = PowerupMinimizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50, "assets/powerup-mini-ball.png")
-  elseif chance > 0  and chance < 15 then --
+  elseif chance > 0  and chance < 15 and config["pow-max-ball"] then --
     powerup = PowerupMaximizeBall( self.rng:random(self.spawnPoint["minX"],self.spawnPoint["maxX"]), self.rng:random(self.spawnPoint["minY"],self.spawnPoint["maxY"]),
                                   50, 50, "assets/powerup-maxi-ball.png")
   end

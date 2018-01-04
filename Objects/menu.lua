@@ -14,7 +14,8 @@ function Menu:new()
                     bigPaddle = 4,
                     smallPaddle = 5,
                     wall = 6,
-                    back = 7
+                    confusion = 7,
+                    back = 8
                     
                   }
   self.inOptions = false
@@ -30,12 +31,13 @@ end
 function Menu:getMenuChecks()
   x = love.graphics.getWidth()/2-75
   checks = {
-            MenuCheck("Audio",x,150,config["sound"],"sound"),
-            MenuCheck("MaxiBall",x,200,config["pow-maxi-ball"],"pow-maxi-ball"),
-            MenuCheck("MiniBall",x,250,config["pow-mini-ball"],"pow-mini-ball"),
-            MenuCheck("MaxiPaddle",x,300,config["pow-maxi-pala"],"pow-max-pala"),
-            MenuCheck("MiniPaddle",x,350,config["pow-mini-pala"],"pow-mini-pala"),
-            MenuCheck("Wall",x,400,config["pow-wall"],"pow-wall"),
+            MenuCheck("Audio",x,150,config["sound"],"sound","Turn on/off the music"),
+            MenuCheck("MaxiBall",x,200,config["pow-maxi-ball"],"pow-maxi-ball","Makes ball bigger"),
+            MenuCheck("MiniBall",x,250,config["pow-mini-ball"],"pow-mini-ball","Makes ball smaller"),
+            MenuCheck("MaxiPaddle",x,300,config["pow-maxi-pala"],"pow-max-pala","Makes player paddle bigger"),
+            MenuCheck("MiniPaddle",x,350,config["pow-mini-pala"],"pow-mini-pala","Makes player paddle smaller"),
+            MenuCheck("Wall",x,400,config["pow-wall"],"pow-wall","Creates a wall behind the goal"),
+            MenuCheck("Confusion",x,450,config["pow-confusion-pala"],"pow-confusion-pala","Inverts Controls"),
             MenuOption( x, 500, "Back", true, false)
             }
   return checks
@@ -47,8 +49,12 @@ function Menu:draw()
       love.graphics.setFont(bigFont)
       love.graphics.print("OPTIONS", love.graphics.getWidth()/2-220, 0)
       love.graphics.setFont(mediumFont)
-      for key,option in pairs(self.submenuchecks) do 
+      for key,option in pairs(self.submenuchecks) do
         option:draw()
+        --Subtitle
+        if key == self.selectedOption then
+          love.graphics.print(option.subtitle,love.graphics.getWidth()/2-150,100)
+        end
       end
       self.arrow:draw()
     else
@@ -92,8 +98,8 @@ function Menu:subMenuUpdate(dt)
   end
   
   if self.selectedOption < 1 then
-    self.selectedOption = 7
-  elseif self.selectedOption > 7 then
+    self.selectedOption = self.subMenu.back
+  elseif self.selectedOption > self.subMenu.back then
     self.selectedOption = 1
   end
   
@@ -147,7 +153,7 @@ function Menu:mainMenuUpdate(dt)
 end
 
 function Menu:SaveConfig()
-  for i=1,6 do
+  for i=1,7 do
     self.submenuchecks[i]:Save()
   end
   --Write to config.js

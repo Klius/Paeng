@@ -1,13 +1,14 @@
 MenuCheck = Drawable:extend()
 
-function MenuCheck:new(label, x, y, checked, configKey)
+function MenuCheck:new(label, x, y, checked, configKey, subtitle)
   self.configKey = configKey
   self.label = label
   self.checked = checked
   self.selected = false
   self.sprite = love.graphics.newImage("assets/menu-checkbox.png")
-  self.x = x;
-  self.y = y;
+  self.x = x
+  self.y = y
+  self.subtitle = subtitle or ""
   self.selectedFrame = 0
   self.frames = { }
   self.totalFrames = 1

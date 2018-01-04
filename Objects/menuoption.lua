@@ -6,6 +6,7 @@ function MenuOption:new(x, y, text, enabled,selected)
     self.text = text
     self.enabled = enabled
     self.selected = selected
+    self.subtitle = ""
 end
 function MenuOption:draw()
     love.graphics.setFont(mediumFont)
